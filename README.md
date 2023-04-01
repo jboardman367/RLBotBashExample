@@ -9,3 +9,4 @@ This bot assumes git bash is installed to the default location
 
 - Bot behavior is controlled by `src/bin/bot.bash`
 - Bot appearance is controlled by `src/appearance.cfg`
+- All numeric values are integers
