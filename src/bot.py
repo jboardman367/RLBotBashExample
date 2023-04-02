@@ -1,5 +1,5 @@
 import json
-from time import perf_counter
+from time import perf_counter, sleep
 from typing import Any, List, Tuple, Union
 from rlbot.agents.base_agent import BaseAgent, SimpleControllerState
 from rlbot.messages.flat.QuickChatSelection import QuickChatSelection
@@ -14,6 +14,7 @@ class MyBot(BaseAgent):
     def __init__(self, name, team, index):
         super().__init__(name, team, index)
         # Create the bash subprocess
+        print(f"Starting bash agent with arguments {name} {team} {index}")
         self.bash = subprocess.Popen(
             [f"{os.getenv('ProgramFiles')}\\Git\\bin\\sh.exe", "-c", f"{dir_path}\\bin\\bot.bash {name} {team} {index}".replace("\\", "/")],
             stdin=subprocess.PIPE,
@@ -34,6 +35,7 @@ class MyBot(BaseAgent):
         mangled_input = " ".join((i[0] + "=" + str(i[1]) for i in mangle_names(dict_packet)))
         tick = perf_counter()
         self.bash.stdin.write((mangled_input + "\n").encode("utf-8"))
+        self.bash.stdin.flush()
         tock = perf_counter()
         print(f"input: {tock - tick}")  # >0.04 seconds atm
         tick = tock
@@ -75,7 +77,7 @@ def dict_from_packet(packet: GameTickPacket) -> dict:
                     "roll": int(car.physics.rotation.roll),
                 }
             }
-            for car in packet.game_cars
+            for car in packet.game_cars[:packet.num_cars]
         ]
     }
 

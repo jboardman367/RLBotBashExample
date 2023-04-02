@@ -39,9 +39,10 @@ while true; do
 
     # Steer should be the sign of the dot
     if [[ "$dot" == -* ]]; then
-        echo "{\"controls\": { \"throttle\": 1, \"boost\": true, \"steer\": 0.9, \"handbrake\": $hb }, \"log\": \"$dsq\" }"
+        steer="1"
     else
-        echo "{\"controls\": { \"throttle\": 1, \"boost\": true, \"steer\": -0.8, \"handbrake\": $hb }, \"log\": \"$dsq\" }"
+        steer="-1"
     fi
+    echo "{\"controls\": { \"throttle\": 1, \"boost\": true, \"steer\": $steer, \"handbrake\": $hb }, \"log\": \"\" }"
     
 done
