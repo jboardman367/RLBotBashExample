@@ -20,7 +20,7 @@ The key-value pairs are generated from name-mangling the following JSON to a ful
 dot-seperated key for each value. e.g. key-value pair for the x velocity of the car at index 2
 is `cars.2.velocity.x=412`
 
-```json
+```jsonc
 // All numbers are provided as integers.
 {
     "ball": {
@@ -64,7 +64,7 @@ is `cars.2.velocity.x=412`
 Output should be returned by outputting a string to `stdout`, typically with `echo`.
 The string should follow the below JSON format
 
-```json
+```jsonc
 {
     "controls": {
         // All fields are optional and default to 0 or false
