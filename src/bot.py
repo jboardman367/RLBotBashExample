@@ -1,5 +1,4 @@
 import json
-from time import perf_counter, sleep
 from typing import Any, List, Tuple, Union
 from rlbot.agents.base_agent import BaseAgent, SimpleControllerState
 from rlbot.messages.flat.QuickChatSelection import QuickChatSelection
@@ -19,7 +18,7 @@ class MyBot(BaseAgent):
             [f"{os.getenv('ProgramFiles')}\\Git\\bin\\sh.exe", "-c", f"{dir_path}\\bin\\bot.bash {name} {team} {index}".replace("\\", "/")],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stderr=subprocess.STDOUT
         )
 
     def initialize_agent(self):
@@ -33,15 +32,9 @@ class MyBot(BaseAgent):
         """
         dict_packet = dict_from_packet(packet)
         mangled_input = " ".join((i[0] + "=" + str(i[1]) for i in mangle_names(dict_packet)))
-        tick = perf_counter()
         self.bash.stdin.write((mangled_input + "\n").encode("utf-8"))
         self.bash.stdin.flush()
-        tock = perf_counter()
-        print(f"input: {tock - tick}")  # >0.04 seconds atm
-        tick = tock
         bash_output = self.bash.stdout.readline().decode()
-        tock = perf_counter()
-        print(f"output: {tock - tick}")  # >0.4 seconds atm
         bash_controller = decode_output(bash_output)
         return bash_controller
     

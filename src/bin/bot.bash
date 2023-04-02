@@ -15,6 +15,7 @@ velyMatch="cars.$myIndex.velocity.y=*"
 while true; do
     read packet
 
+    # Read values out of packet
     for val in $packet; do
         case $val in
             ball.location.x=*)
@@ -47,7 +48,7 @@ while true; do
     dotY=$((meToBallY*meVelX))
     dot=$((dotX-dotY))
 
-    # Try to avoid orbits by using some handbrake
+    # Try to use some handbrake when close
     xsq=$((meToBallX*meToBallX)) 
     ysq=$((meToBallY*meToBallY))
     dsq=$((xsq+ysq))
