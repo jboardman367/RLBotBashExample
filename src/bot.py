@@ -72,9 +72,9 @@ def dict_from_packet(packet: GameTickPacket) -> dict:
                     "z": int(car.physics.location.z),
                 },
                 "rotation": {
-                    "yaw": int(car.physics.rotation.yaw),
-                    "pitch": int(car.physics.rotation.pitch),
-                    "roll": int(car.physics.rotation.roll),
+                    "yaw": int(car.physics.rotation.yaw * 100),
+                    "pitch": int(car.physics.rotation.pitch * 100),
+                    "roll": int(car.physics.rotation.roll * 100),
                 }
             }
             for car in packet.game_cars[:packet.num_cars]
