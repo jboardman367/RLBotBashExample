@@ -7,17 +7,36 @@ myName=$1
 myTeam=$2
 myIndex=$3
 
+locxMatch="cars.$myIndex.location.x=*"
+locyMatch="cars.$myIndex.location.y=*"
+velxMatch="cars.$myIndex.velocity.x=*"
+velyMatch="cars.$myIndex.velocity.y=*"
+
 while true; do
     read packet
 
-    ballX=$(echo "$packet" | sed -E -e "s/^.*ball\.location\.x=([^ ]*).*$/\1/g")
-    ballY=$(echo "$packet" | sed -E -e "s/^.*ball\.location\.y=([^ ]*).*$/\1/g")
-
-    mePosX=$(echo "$packet" | sed -E -e "s/^.*cars\.$myIndex\.location\.x=([^ ]*).*$/\1/g")
-    mePosY=$(echo "$packet" | sed -E -e "s/^.*cars\.$myIndex\.location\.y=([^ ]*).*$/\1/g")
-
-    meVelX=$(echo "$packet" | sed -E -e "s/^.*cars\.$myIndex\.velocity\.x=([^ ]*).*$/\1/g")
-    meVelY=$(echo "$packet" | sed -E -e "s/^.*cars\.$myIndex\.velocity\.y=([^ ]*).*$/\1/g")
+    for val in $packet; do
+        case $val in
+            ball.location.x=*)
+                ballX=${val#*=}
+                ;;
+            ball.location.y=*)
+                ballY=${val#*=}
+                ;;
+            $locxMatch)
+                mePosX=${val#*=}
+                ;;
+            $locyMatch)
+                mePosY=${val#*=}
+                ;;
+            $velxMatch)
+                meVelX=${val#*=}
+                ;;
+            $velyMatch)
+                meVelY=${val#*=}
+                ;;
+        esac
+    done
 
     # Find me to ball
     meToBallX=$((ballX-mePosX))
